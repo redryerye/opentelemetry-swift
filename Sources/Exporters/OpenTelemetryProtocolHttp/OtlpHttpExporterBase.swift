@@ -33,6 +33,11 @@ public class OtlpHttpExporterBase {
       request.httpBody = try body.serializedData()
       request.setValue(Headers.getUserAgentHeader(), forHTTPHeaderField: Constants.HTTP.userAgent)
       request.setValue("application/x-protobuf", forHTTPHeaderField: "Content-Type")
+      if let envVarHeaders {
+        for (key, value) in envVarHeaders {
+          request.setValue(value, forHTTPHeaderField: key)
+        }
+      }
     } catch {
       print("Error serializing body: \(error)")
     }
